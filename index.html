@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DELIVERY GUY — he marked it delivered.</title>
+<meta name="description" content="$DELIVERY — he marked it delivered. it was not delivered.">
+<meta property="og:title" content="DELIVERY GUY">
+<meta property="og:description" content="he marked it delivered. it was not delivered.">
+<meta property="og:image" content="og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2b1a12">
+<link rel="icon" href="favicon.ico"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--brown:#2b1a12;--brown2:#4a2c1c;--gold:#ffb500;--paper:#f6f1e7;--ink:#1a120d;--mute:#8c7b6e;--red:#e0301e;--green:#2e9e4f}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--brown)}
+body{color:var(--paper);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;user-select:none;cursor:crosshair}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+/* ---- the video ---- */
+#stage{position:fixed;inset:0;background:#2b1a12}
+#vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:55% 50%}
+#tint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(43,26,18,.35),transparent 30%,transparent 62%,rgba(43,26,18,.78))}
+#grain{position:absolute;inset:-40%;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");animation:gr .3s steps(2) infinite}
+@keyframes gr{50%{transform:translate(-2%,3%)}}
+#shake.on{animation:shk .5s}
+@keyframes shk{0%{transform:translate(0,0)}15%{transform:translate(-9px,6px)}30%{transform:translate(8px,-5px)}45%{transform:translate(-6px,3px)}60%{transform:translate(4px,-3px)}80%{transform:translate(-2px,1px)}100%{transform:none}}
+
+/* ---- delivered stamp ---- */
+#stamp{position:fixed;z-index:8;left:50%;top:44%;transform:translate(-50%,-50%) rotate(-14deg) scale(2.4);opacity:0;pointer-events:none;font-family:"Archivo Black",sans-serif;font-size:clamp(44px,9vw,120px);letter-spacing:.02em;color:var(--red);border:6px solid var(--red);padding:2px 22px;border-radius:8px;mix-blend-mode:multiply;text-transform:uppercase;line-height:1}
+#stamp.on{animation:st 2.6s forwards}
+@keyframes st{0%{opacity:0;transform:translate(-50%,-50%) rotate(-14deg) scale(2.4)}12%{opacity:.9;transform:translate(-50%,-50%) rotate(-14deg) scale(1)}80%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) rotate(-14deg) scale(1)}}
+
+/* ---- tracking card ---- */
+#track{position:fixed;z-index:10;top:22px;left:22px;width:min(88vw,332px);background:var(--paper);color:var(--ink);border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 0 1px rgba(0,0,0,.25);overflow:hidden;transform:rotate(-1deg)}
+#track .hd{background:var(--brown);color:var(--gold);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+#track .hd i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(255,181,0,.25);animation:pp 1.4s infinite;margin-right:8px;vertical-align:middle}
+@keyframes pp{50%{opacity:.35}}
+#track .num{padding:12px 14px 8px;border-bottom:1px dashed #cfc4b4}
+#track .num small{display:block;font-size:10px;letter-spacing:.18em;color:var(--mute);text-transform:uppercase;margin-bottom:5px}
+#track .num .row{display:flex;align-items:center;gap:8px}
+#track .num code{flex:1;font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.02em}
+#track .num button{font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--brown);color:var(--gold);padding:6px 9px;border-radius:3px}
+#track .num button:hover{background:var(--brown2)}
+#steps{list-style:none;padding:12px 14px 8px}
+#steps li{position:relative;padding:0 0 14px 24px;font-size:12.5px;color:#b3a696}
+#steps li:before{content:"";position:absolute;left:5px;top:5px;width:9px;height:9px;border-radius:50%;background:#d9cfc1;border:2px solid var(--paper);box-shadow:0 0 0 1px #d9cfc1}
+#steps li:after{content:"";position:absolute;left:9px;top:16px;bottom:-2px;width:1px;background:#d9cfc1}
+#steps li:last-child:after{display:none}
+#steps li span{display:block;font-size:10.5px;color:#b3a696;margin-top:2px}
+#steps li.on{color:var(--ink)}
+#steps li.on:before{background:var(--brown);box-shadow:0 0 0 1px var(--brown)}
+#steps li.on span{color:var(--mute)}
+#steps li.now{color:var(--ink);font-weight:600}
+#steps li.now:before{background:var(--gold);box-shadow:0 0 0 1px var(--brown);animation:pp 1s infinite}
+#steps li.bad{color:var(--red)}
+#steps li.bad:before{background:var(--red);box-shadow:0 0 0 1px var(--red)}
+#track .ft{display:flex;border-top:1px dashed #cfc4b4}
+#track .ft div{flex:1;padding:9px 14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+#track .ft div+div{border-left:1px dashed #cfc4b4}
+#track .ft b{display:block;font-size:14px;color:var(--ink);letter-spacing:0;margin-top:2px;font-weight:600}
+#track .ft b.up{color:var(--green)}
+
+/* ---- wordmark ---- */
+#mark{position:fixed;z-index:9;left:22px;bottom:24px;pointer-events:none}
+#mark h1{font-family:"Archivo Black",sans-serif;font-size:clamp(40px,7.2vw,104px);line-height:.88;letter-spacing:-.02em;color:var(--gold);text-shadow:0 4px 0 var(--brown),0 10px 40px rgba(0,0,0,.6)}
+#mark h1 em{font-style:normal;color:var(--paper)}
+#mark p{margin-top:12px;font-size:13px;letter-spacing:.06em;color:var(--paper);text-shadow:0 1px 4px #000}
+#mark p b{color:var(--gold);font-weight:600}
+
+/* ---- actions ---- */
+#acts{position:fixed;z-index:10;right:22px;bottom:24px;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+#acts .row{display:flex;gap:9px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:4px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;background:rgba(43,26,18,.85);border:1px solid rgba(255,181,0,.35);color:var(--paper);backdrop-filter:blur(6px);transition:.15s;white-space:nowrap}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn.gold{background:var(--gold);color:var(--brown);border-color:var(--gold);font-weight:600}
+.btn.gold:hover{background:#ffc63a;color:var(--brown)}
+#redo{font-size:11px;padding:9px 12px;opacity:.85}
+#thrown{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);text-shadow:0 1px 4px #000;text-align:right}
+#thrown b{color:var(--gold);font-weight:600}
+
+#toast{position:fixed;z-index:30;left:50%;top:22px;transform:translate(-50%,-10px);background:var(--paper);color:var(--ink);border-radius:4px;padding:10px 16px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:0;transition:.24s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.4);white-space:nowrap}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:700px){
+  body{font-size:12px}
+  #vid{object-position:58% 50%}
+  #track{top:12px;left:12px;width:calc(100vw - 24px);transform:none}
+  #track .hd{padding:8px 12px;font-size:10px}
+  #track .num{padding:9px 12px 6px}
+  #steps{padding:8px 12px 4px;display:grid;grid-template-columns:1fr 1fr;column-gap:10px}
+  #steps li{padding:0 0 9px 23px;font-size:11.5px}
+  #steps li:after{display:none}
+  #steps li span{display:none}
+  #track .ft div{padding:7px 12px;font-size:9px}
+  #track .ft b{font-size:12.5px}
+  #mark{left:12px;bottom:calc(14px + env(safe-area-inset-bottom));right:12px}
+  #mark h1{font-size:15vw}
+  #mark p{margin-top:8px;font-size:11px;padding-bottom:150px}
+  #acts{left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom));align-items:stretch}
+  #acts .row{width:100%;flex-wrap:wrap}
+  #acts .row .btn{flex:1;justify-content:center}
+  #redo{flex-basis:100%;order:0}
+  #x{flex:0 0 64px}
+  #buy{flex:1}
+  #thrown{text-align:left}
+  #toast{top:auto;bottom:150px}
+  #stamp{top:40%}
+}
+</style>
+</head>
+<body>
+
+<div id="stage"><div id="shake">
+  <video id="vid" autoplay muted loop playsinline preload="auto" poster="poster.jpg">
+    <source src="guy.webm" type="video/webm">
+    <source src="guy.mp4" type="video/mp4">
+  </video>
+  <div id="tint"></div><div id="grain"></div>
+</div></div>
+
+<div id="stamp">delivered</div>
+
+<div id="track">
+  <div class="hd"><span><i></i>Track package</span><span id="tick">00:00</span></div>
+  <div class="num"><small>Tracking number</small><div class="row"><code id="ca-t">not launched yet</code><button id="copy">copy</button></div></div>
+  <ul id="steps">
+    <li data-t="0">Out for delivery<span>driver is 1 stop away</span></li>
+    <li data-t="1.2">Driver arrived<span>vehicle did not fully stop</span></li>
+    <li data-t="3.0" data-bad="1">Delivered<span>left at: front door (thrown)</span></li>
+    <li data-t="7.4">Driver left<span>signature: none · photo: blurry</span></li>
+  </ul>
+  <div class="ft"><div>Declared value<b id="k-mc">—</b></div><div>Redelivery<b id="k-re">never</b></div></div>
+</div>
+
+<div id="mark"><h1>DELIVERY<br><em>GUY</em></h1><p>he marked it <b>delivered</b>. it was not delivered.</p></div>
+
+<div id="acts">
+  <div id="thrown">packages thrown today <b id="k-th">1</b></div>
+  <div class="row">
+    <button class="btn" id="redo">↻ request redelivery</button>
+    <a class="btn" id="x" target="_blank" rel="noopener">X</a>
+    <a class="btn gold" id="buy" target="_blank" rel="noopener">buy <span id="tk">$DELIVERY</span></a>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const CFG=Object.assign({CA:"",TICKER:"DELIVERY",PAD:"pumpfun",X:"https://x.com/",BUY:"",CHART:""},window.DELIVERY_CFG||{});
+const PADS={pumpfun:ca=>`https://pump.fun/coin/${ca}`,stonkfun:ca=>`https://www.stonkfun.xyz/token/${ca}`};
+const BUY=CFG.BUY||(CFG.CA?(PADS[CFG.PAD]||PADS.pumpfun)(CFG.CA):"");
+$("#tk").textContent="$"+CFG.TICKER;
+$("#buy").href=BUY||"#"; if(!BUY) $("#buy").onclick=e=>{e.preventDefault();toast("not launched yet")};
+$("#x").href=CFG.X;
+if(CFG.CA) $("#ca-t").textContent=CFG.CA;
+let tt; function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),2000);}
+$("#copy").onclick=()=>{ if(!CFG.CA) return toast("not launched yet"); navigator.clipboard?.writeText(CFG.CA); toast("tracking number copied"); };
+
+/* ---- video ↔ tracking sync ---- */
+const vid=$("#vid"), steps=$$("#steps li");
+let thrown=1, redo=0, stamped=false, lastT=0;
+const IMPACT=+steps[2].dataset.t;
+function sync(){
+  const t=vid.currentTime;
+  if(t<lastT-1){ stamped=false; thrown++; $("#k-th").textContent=thrown; }   // looped
+  lastT=t;
+  let now=-1; steps.forEach((li,i)=>{ if(t>=+li.dataset.t) now=i; });
+  steps.forEach((li,i)=>{ li.classList.toggle("on",i<=now); li.classList.toggle("now",i===now); li.classList.toggle("bad",i===2&&i<=now&&li.dataset.bad==="1"); });
+  if(t>=IMPACT&&!stamped){ stamped=true; hit(); }
+  const m=String(Math.floor(t/60)).padStart(2,"0"), s=String(Math.floor(t%60)).padStart(2,"0"); $("#tick").textContent=m+":"+s;
+}
+function hit(){
+  const st=$("#stamp"); st.classList.remove("on"); void st.offsetWidth; st.classList.add("on");
+  const sh=$("#shake"); sh.classList.remove("on"); void sh.offsetWidth; sh.classList.add("on");
+  if(navigator.vibrate) navigator.vibrate([40,30,60]);
+}
+vid.addEventListener("timeupdate",sync);
+setInterval(sync,120);
+vid.play().catch(()=>{});
+document.addEventListener("click",()=>{ if(vid.paused) vid.play().catch(()=>{}); },{once:true});
+
+/* ---- redelivery ---- */
+const RE=["redelivery scheduled. same guy.","he is on his way back. hide.","request received. request ignored.","redelivery attempted. thrown harder."];
+$("#redo").onclick=()=>{ redo++; $("#k-re").textContent=redo+"×"; toast(RE[(redo-1)%RE.length]); stamped=false; try{ vid.currentTime=0; vid.play(); }catch(e){} };
+
+/* ---- stats: buys throw packages ---- */
+const fmt=n=>n>=1e6?"$"+(n/1e6).toFixed(2)+"M":n>=1e3?"$"+(n/1e3).toFixed(1)+"K":"$"+Math.round(n);
+let prevBuys=null;
+function paint(cap,buys){ const e=$("#k-mc"); e.textContent=cap?fmt(cap):"—"; e.classList.toggle("up",!!cap);
+  if(prevBuys!=null&&buys>prevBuys){ thrown+=buys-prevBuys; $("#k-th").textContent=thrown; toast("new buy · package thrown"); } prevBuys=buys; }
+async function stats(){
+  if(!CFG.CA) return;
+  let p=null; try{ const r=await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CFG.CA}`); const j=await r.json(); p=(j.pairs||[]).sort((x,y)=>(y.liquidity?.usd||0)-(x.liquidity?.usd||0))[0]||null; }catch(e){}
+  if(p&&(p.fdv||p.marketCap||+p.priceUsd)){ paint(p.fdv??p.marketCap??(+p.priceUsd*1e9),p.txns?.h24?.buys); return; }
+  try{ const r=await fetch(`https://lite-api.jup.ag/price/v3?ids=${CFG.CA}`); const j=await r.json(); const q=j[CFG.CA]; if(q&&q.usdPrice){ paint(q.usdPrice*1e9,p?.txns?.h24?.buys); return; } }catch(e){}
+  try{ const r=await fetch(`https://api.geckoterminal.com/api/v2/networks/solana/tokens/${CFG.CA}/pools?page=1`); const j=await r.json(); const g=j.data?.[0]?.attributes; if(g) paint(g.fdv_usd??g.market_cap_usd,g.transactions?.h24?.buys); }catch(e){}
+}
+stats(); if(CFG.CA) setInterval(stats,30000);
+</script>
+</body>
+</html>
